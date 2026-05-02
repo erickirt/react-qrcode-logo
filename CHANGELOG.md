@@ -1,12 +1,21 @@
 # Changelog
 
+## [v4.1.0]
+
+### Features
+- Added new optional prop `pixelRatio` to control the canvas scale factor; defaults to `window.devicePixelRatio` on the React component and to `1` on the standalone functions;
+- Added new standalone function `downloadQRCode` to generate and download a QR code without mounting the `<QRCode />` component;
+- Added new standalone function `generateCanvas` that returns a fully-rendered `HTMLCanvasElement`, useful for composing the QR code with other canvas content;
+- Added new standalone function `generateDataURL` that returns a data URL string, useful for inline `<img src>`, CSS backgrounds, or embedding in HTML emails;
+- Added new standalone function `generateBlob` that returns a `Blob`, ideal for uploads where base64 overhead should be avoided;
+
 ## [v4.0.0]
 
 ### Fixes
 
 - Fixed behavior of `removeQrCodeBehindLogo`, if true it will now excavate the QR code so that the single cells are not cropped by the logo;
 - Updated the main QR code library to the latest version;
-- Removed deprecated library lodash.isequal and use a customer compare method instead;
+- Removed deprecated library lodash.isequal and use a custom compare method instead;
 
 ### Features
 
