@@ -51,6 +51,7 @@ If you are using a React version >= 18, use react-qrcode-logo version >= 3.0.0
 | `qrStyle`                | `squares` &#124; `dots` &#124; `fluid`            | `squares`  | Style of the QR Code modules                                                                                                       |
 | `eyeRadius`              | `CornerRadii` &#124; `CornerRadii[]` |  | The corner radius for the positional patterns (the three "eyes" around the QR code). [See more details here](res/eyeRadius_doc.md) |
 | `eyeColor`               | `EyeColor` &#124; `EyeColor[]`      |  | The color for the positional patterns (the three "eyes" around the QR code). [See more details here](res/eyeColor_doc.md)          |
+| `pixelRatio`               | `number`      |  `window.devicePixelRatio` | Scale factor for the rendered canvas. Defaults to the device's native pixel ratio for sharp rendering on high-DPI displays. Override for advanced cases (e.g. forcing 1 to reduce memory on dense layouts).          |
 | `id`                     | `string`                            | `react-qrcode-logo` | Optional custom id for the QRCode canvas. You can use this prop if you have multiple QRCodes and need to differentiate them        |
 | `style`       | `React.CSSProperties` |  | CSS style properties that will be applied to the canvas component |
 
@@ -67,6 +68,18 @@ Methods must be called on a valid QRCode ref - [learn more](https://react.dev/le
 | Method Name                     | Arguments                                | Description                                                                                                                      |
 |--------------------------|-------------------------------------| ----------------------------------------------------------------------------------------------------------------------------------|
 | `download`                  | `fileType?`: `'png'` &#124; `'jpg'` &#124; `'webp'`, `fileName?: string`                            | This function will download the QR Code as image. Format and file name can be specified                                         |
+
+## Standalone functions
+
+These functions can be imported and called directly, without mounting the `<QRCode />` component. Useful for generating QR codes server-side-rendered previews, background uploads, or composing the QR into a larger canvas. 
+All accept the same rendering options as the component props (e.g. `value`, `size`, `fgColor`, `logoImage`, etc.), except `id` and `style` which only apply to the React component. Note that in this case the default value of the prop `pixelRatio` is set to 1 for predictable pixel-perfect export.
+
+| Function Name                     | Arguments                                | Returns                      | Description                                                                                                                      |
+|--------------------------|-------------------------------------|-------------------------| ----------------------------------------------------------------------------------------------------------------------------------|
+| `downloadQRCode`   | `opts: QRRenderOptions`,  `fileType?: 'png' \| 'jpg' \| 'webp'`,  `fileName?: string`  | `Promise<void>` | Generates the QR code and triggers a browser download. Does not require a mounted component.                                                 |
+| `generateBlob`     | `opts: QRRenderOptions`, `fileType?: 'png' \| 'jpg' \| 'webp'` | `Promise<Blob>`               | Returns the QR code as a `Blob`. Ideal for uploads (`FormData`, `fetch`) where base64 overhead should be avoided.                            |
+| `generateDataURL`  | `opts: QRRenderOptions`,  `fileType?: 'png' \| 'jpg' \| 'webp'`  | `Promise<string>`             | Returns the QR code as a data URL (`data:image/png;base64,...`). Useful for inline `<img src>`, CSS backgrounds, or embedding in HTML emails. |
+| `generateCanvas`   | `opts: QRRenderOptions` | `Promise<HTMLCanvasElement>`  | Returns the fully-rendered `HTMLCanvasElement`. Use when composing the QR with other canvas content or post-processing pixels.               |
 
 ## Example
 
